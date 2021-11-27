@@ -1,4 +1,4 @@
-;do $System.OBJ.LoadDir("/opt/irisbuild/src","ck",,1)
+DO $System.OBJ.LoadDir("/opt/irisbuild/src","ck",,1)
 
 zn "%SYS"
 Do ##class(Security.Users).UnExpireUserPasswords("*")
