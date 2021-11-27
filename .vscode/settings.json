@@ -14,6 +14,11 @@
       },
       "active": true
     },
+
+      "objectscript.serverSideEditing": true,
+      "objectscript.showExplorer": true,
+      "objectscript.searchAllDocTypes": true ,
+
     "sqltools.connections": [
       {
         "namespace": "USER",
