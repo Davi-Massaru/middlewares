@@ -43,8 +43,15 @@ ClassMethod GetMiddlewares(pUrl As %String, pMethod As %String) As %List
     Set descriptionMethod = ..GetDescriptionOfMethod(pUrl, pMethod)
 
     Set globals = ..WithMiddlewares()
-    Set specifics = $LISTFROMSTRING( $LISTTOSTRING(##class(dc.Util.Regex).GetGroups("(?<=\@with_middlewares\().+?(?=\))", descriptionMethod) ) )
-    Set skip = $LISTFROMSTRING( $REPLACE( $LISTTOSTRING( ##class(dc.Util.Regex).GetGroups("(?<=\@without_middlewares\().+?(?=\))", descriptionMethod) ), " ", "" ))
+    Set:($LISTGET(globals, 1) = "") globals = $LB("")
+
+    Set listSpecifics = ##class(dc.Util.Regex).GetGroups("(?<=\@with_middlewares\().+?(?=\))", descriptionMethod)
+    Set:($LISTGET(listSpecifics, 1) = "") listSpecifics = $LB("")
+    Set specifics = $LISTFROMSTRING( $LISTTOSTRING( listSpecifics) )
+
+    Set listSkip = ##class(dc.Util.Regex).GetGroups("(?<=\@without_middlewares\().+?(?=\))", descriptionMethod)
+    Set:( $LISTGET(listSkip, 1) = "") listSkip = $LB("")
+    Set skip = $LISTFROMSTRING( $LISTTOSTRING( listSkip) )
 
     Set all = $LISTFROMSTRING( $LISTTOSTRING( $LB( $REPLACE( $LISTTOSTRING( globals ) ," ", "" ), $REPLACE( $LISTTOSTRING( specifics ) ," ", "" ) ) ) )
 
