@@ -20,10 +20,10 @@ You can define your middleware in the package of your choice, in this project th
 Class dc.Middleware.Middleware1 Extends dc.Chain.Middleware
 {
 
-    Method Handle()
-    {
-        Do ..Next()
-    }
+Method Handle()
+{
+    Do ..Next()
+}
 
 }
 ```
@@ -39,9 +39,9 @@ Set the #AbortCode & #AbortMessage parameters to customize a specific Middleware
 they have as default value AbortCode = { ##class(%CSP.REST).#HTTP401UNAUTHORIZED } and AbortMessage = "Unauthorized"
 
 ```
-    Parameter AbortCode = {##class(%CSP.REST).#HTTP403FORBIDDEN};
+Parameter AbortCode = {##class(%CSP.REST).#HTTP403FORBIDDEN};
 
-    Parameter AbortMessage = "Forbidden";
+Parameter AbortMessage = "Forbidden";
 ```
 When the method Abort is activated the response will be your status code set to ```#AbortCode``` and a content define with { "Message" : ( ```#AbortMessage``` ) }
 
