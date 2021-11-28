@@ -6,15 +6,15 @@ Handle request headers, create your own rules and validations even before runnin
 
 ## How Middlewares Work
 
-Middleware are coded in the behavioral design pattern known as "chain of responsibility" allows you to pass requests through a chain of handlers. Upon receiving an order, each handler decides whether to process the order or pass it on to the next handler in the chain.
+Middleware are coded in the behavioral design pattern known as "chain of responsibility", allows you to pass requests through a chain of handlers. Upon receiving an order, each handler decides whether to process the order or pass it on to the next handler in the chain.
 
 <img src="https://raw.githubusercontent.com/Davi-Massaru/middlewares/master/README/domino.gif"></img>
 
-All chains have a unique responsibility and most of them must return void, if something happens different than expected, the chain be broken and an exception is usually thrown.
+All chains have a unique responsibility and most of them must return void, if something happens different than expected, the chain will be broken and an exception is usually thrown.
 
 ## Defining Middleware
 
-You can define your middleware in the package of your choice, in this project there are some examples in the dc.Middleware package, should always extend from ```dc.Chain.Middleware``` and have the ```Method Handle``` implement.
+You can define your middleware in the package of your choice, in this project there are some examples in the dc.Middleware package, it should always extend from ```dc.Chain.Middleware``` and have the ```Method Handle``` implement.
 
 ```
 Class dc.Middleware.Middleware1 Extends dc.Chain.Middleware
@@ -49,7 +49,7 @@ When Do Abort the response will be your status code set to ```#AbortCode``` and 
 
 Create a class that Extends dc.Dispatch this class enable middlewares in your Dispatch class.
 
-Overwrite the ClassMethod WithMiddlewares() to return a list of Middlewares you want to invoke whenever a request occurs. They are will be called in the order given.
+Overwrite the ClassMethod WithMiddlewares() to return a list of Middlewares you want to invoke whenever a request occurs. They will be called in the order that was given to them.
 
 ```
 Class cd.Api.MainDispatch Extends dc.Dispatch
