@@ -47,8 +47,7 @@ ClassMethod GetMiddlewares(pUrl As %String, pMethod As %String) As %List
     Set skip = $LISTFROMSTRING( $REPLACE( $LISTTOSTRING( ##class(dc.Util.Regex).GetGroups("(?<=\@without_middlewares\().+?(?=\))", descriptionMethod) ), " ", "" ))
 
     Set all = $LISTFROMSTRING( $LISTTOSTRING( $LB( $REPLACE( $LISTTOSTRING( globals ) ," ", "" ), $REPLACE( $LISTTOSTRING( specifics ) ," ", "" ) ) ) )
-    Set ^all = all
-    Set ^skip = skip
+
     Set ptr=0
     While $LISTNEXT(all, ptr, value) {
            Set:( $LISTFIND(skip,value) = 0) $LIST(middlewares,*+1) = value
