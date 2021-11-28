@@ -40,7 +40,6 @@ they have as default value AbortCode = { ##class(%CSP.REST).#HTTP401UNAUTHORIZED
 
 ```
 Parameter AbortCode = {##class(%CSP.REST).#HTTP403FORBIDDEN};
-
 Parameter AbortMessage = "Forbidden";
 ```
 When the method Abort is activated the response will be your status code set to ```#AbortCode``` and a content define with { "Message" : ( ```#AbortMessage``` ) }
