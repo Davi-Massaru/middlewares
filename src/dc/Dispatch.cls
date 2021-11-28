@@ -12,18 +12,16 @@ ClassMethod WithMiddlewares() As %List
 
 ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue As %Boolean) As %Status
 {
-    Do ..HandleWithMiddlewares(.pContinue)
+    Do ..HandleWithMiddlewares(.pContinue, pUrl, pMethod)
 
     Quit $$$OK
 }
 
-ClassMethod HandleWithMiddlewares(ByRef pContinue As %Boolean)
+ClassMethod HandleWithMiddlewares(ByRef pContinue As %Boolean, pUrl As %String, pMethod As %String)
 {
     Try {
 
-        Set listMiddlewares = ..WithMiddlewares()
-
-        Set middleware = ##class(dc.Chain.Chain).%New(..WithMiddlewares())
+        Set middleware = ##class(dc.Chain.Chain).%New(..GetMiddlewares(pUrl, pMethod))
         Do middleware.Handle()
     }
     Catch exception {
@@ -38,6 +36,34 @@ ClassMethod HandleWithMiddlewares(ByRef pContinue As %Boolean)
 
         Throw exception
     }
+}
+
+ClassMethod GetMiddlewares(pUrl As %String, pMethod As %String) As %List
+{
+    Set descriptionMethod = ..GetDescriptionOfMethod(pUrl, pMethod)
+
+    Set globals = ..WithMiddlewares()
+    Set specifics = $LISTFROMSTRING( $LISTTOSTRING(##class(dc.Util.Regex).GetGroups("(?<=\@with_middlewares\().+?(?=\))", descriptionMethod) ) )
+    Set skip = $LISTFROMSTRING( $REPLACE( $LISTTOSTRING( ##class(dc.Util.Regex).GetGroups("(?<=\@without_middlewares\().+?(?=\))", descriptionMethod) ), " ", "" ))
+
+    Set all = $LISTFROMSTRING( $LISTTOSTRING( $LB( $REPLACE( $LISTTOSTRING( globals ) ," ", "" ), $REPLACE( $LISTTOSTRING( specifics ) ," ", "" ) ) ) )
+    Set ^all = all
+    Set ^skip = skip
+    Set ptr=0
+    While $LISTNEXT(all, ptr, value) {
+           Set:( $LISTFIND(skip,value) = 0) $LIST(middlewares,*+1) = value
+    }
+
+    Return middlewares
+}
+
+ClassMethod GetDescriptionOfMethod(pUrl As %String, pMethod As %String) As %String
+{
+    $$$ThrowOnError(##class(dc.Util.XData).GetXDataContent(..%ClassName(1), "UrlMap", .Content))
+
+    $$$ThrowOnError(##class(dc.Util.XData).GetResultByEvaluateExpression(Content, "/Routes", "Route[@Url='"_pUrl_"' and @Method='"_pMethod_"']", .listOfObjects))
+
+    Return (##class(%Dictionary.MethodDefinition).%OpenId(..%ClassName(1)_"||"_listOfObjects.GetAt(1).Call)).Description
 }
 
 }

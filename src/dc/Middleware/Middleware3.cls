@@ -5,7 +5,6 @@ Parameter AbortMessage = "custom message";
 
 Method Handle()
 {
-    Do ..Abort()
     Do ..Next()
 }
 
