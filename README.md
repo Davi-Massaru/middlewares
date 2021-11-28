@@ -61,7 +61,6 @@ ClassMethod WithMiddlewares() As %List
 }
 
 }
-
 ```
 
 The dc.Dispatch called WithMiddlewares on OnPreDispatch, to be executed for EVERY request, if abort occurs, pContinue is set to 0 and the request is not processed.
